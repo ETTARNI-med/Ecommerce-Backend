@@ -1,20 +1,14 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User from "../models/User";
+import Customer from "../models/Customer";
 
-//Register new user
+//Register new customer
 export const register = async (req, res) => {
   try {
-    const {
-      first_name,
-      last_name,
-      email,
-      password,
-      picture_path,
-    } = req.body;
+    const { first_name, last_name, email, password, picture_path } = req.body;
     const salt = await bcrypt.genSalt();
     const passwd = await bcrypt.hash(password, salt);
-    const newUser = new User({
+    const newCustomer = new Customer({
       first_name,
       last_name,
       email,
@@ -24,29 +18,29 @@ export const register = async (req, res) => {
       valid_account,
       active: true,
     });
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+    const savedCustomer = await newCustomer.save();
+    res.status(201).json(savedCustomer);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 };
 
-//login a user
+//login a customer
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email: email });
-    if (!user) {
-      return res.status(400).json({ message: "user does not exist." });
+    const customer = await Customer.findOne({ email: email });
+    if (!customer) {
+      return res.status(400).json({ message: "customer does not exist." });
     }
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, customer.password);
     if (!passwordMatch) {
       return res.status(400).json({ message: "Invalid credentials." });
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-    delete user.password;
-    res.status(200).json({ token, user });
+    const token = jwt.sign({ id: customer.id }, process.env.JWT_SECRET);
+    delete customer.password;
+    res.status(200).json({ token, customer });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
