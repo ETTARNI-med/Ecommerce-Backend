@@ -5,9 +5,9 @@ import {
   removeCustomer,
   getCustomerProfile,
   updateCustomerProfile,
+  login,
 } from "./controllers/customersController";
-import { login } from "./controllers/authController";
-import { virifyToken } from "/middleware/authMiddleware";
+import { virifyToken } from "/middleware/customersMiddleware";
 
 const router = express.Router();
 

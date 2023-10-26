@@ -9,8 +9,7 @@ import morgan from "morgan";
 import multer from "multer";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-import { register } from "./controllers/authController";
-import authRoutes from "./routes/authRoutes";
+import { register } from "./controllers/customersController";
 import customersRoutes from "./routes/customersRoutes";
 
 //Setting up some configurations
